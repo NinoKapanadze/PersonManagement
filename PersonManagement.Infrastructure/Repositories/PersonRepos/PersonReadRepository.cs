@@ -15,7 +15,7 @@ namespace PersonManagement.Infrastructure.Repositories
         public async Task<Person?> GetPersonWithDetailsAsync(int id)
         {
             return await _dbContext.Persons
-                .Include(p => p.RelatedPersons)
+                .Include(p => p.RelatedPersons).ThenInclude(rp => rp.RelatedTo)
                 .Include(p => p.PhoneNumbers)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
