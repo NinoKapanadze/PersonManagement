@@ -7,7 +7,6 @@ namespace PersonManagement.Domain.Validators
     {
         public PersonValidator()
         {
-            // FirstName rules
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
                 .MinimumLength(2).WithMessage("First name must be at least 2 characters long.")
@@ -15,7 +14,6 @@ namespace PersonManagement.Domain.Validators
                 .Must(BeOnlyGeorgianOrOnlyLatin)
                 .WithMessage("First name must contain only Georgian letters or only Latin letters, not both.");
 
-            // LastName rules
             RuleFor(x => x.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
                 .MinimumLength(2).WithMessage("Last name must be at least 2 characters long.")
@@ -23,22 +21,23 @@ namespace PersonManagement.Domain.Validators
                 .Must(BeOnlyGeorgianOrOnlyLatin)
                 .WithMessage("Last name must contain only Georgian letters or only Latin letters, not both.");
 
-            // PersonalIdNumber rules
             RuleFor(x => x.PersonalIdNumber)
                 .NotEmpty().WithMessage("Personal ID number is required.")
                 .Matches(@"^\d{11}$").WithMessage("Personal ID number must be exactly 11 digits.");
 
-            // BirthDay rules
             RuleFor(x => x.BirthDay)
                 .Must(BeAtLeast18YearsOld)
                 .WithMessage("Person must be at least 18 years old.");
+
+            RuleForEach(p => p.PhoneNumbers)
+                .SetValidator(new PhoneNumberValidator());
         }
 
         private bool BeOnlyGeorgianOrOnlyLatin(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) return false;
 
-            var georgianRegex = new Regex(@"^[\u10A0-\u10FF]+$"); 
+            var georgianRegex = new Regex(@"^[\u10D0-\u10FF]+$"); 
             var latinRegex = new Regex(@"^[a-zA-Z]+$");
 
             return georgianRegex.IsMatch(name) || latinRegex.IsMatch(name);

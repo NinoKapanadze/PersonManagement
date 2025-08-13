@@ -13,9 +13,7 @@ namespace PersonManagement.API.Controllers
     /// Controller for managing person-related operations.
     /// </summary>
     [Route("api/[controller]")]
-
     [ApiController]
-
     public class PersonController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -36,6 +34,7 @@ namespace PersonManagement.API.Controllers
             var result = await _mediator.Send(createPersonCommand, cancellationToken);
             return Ok(result);
         }
+
         /// <summary>
         /// Adds Related Person to existing person.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 
@@ -15,25 +16,25 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
         }
         public async Task<int> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
         {
-            bool exists = await _personReadRepository.AnyAsync(
-                    p => p.PersonalIdNumber == request.PersonalIdNumber
-            ); 
-            
+            if(await _personReadRepository.AnyAsync(p => p.PersonalIdNumber == request.PersonalIdNumber))
+            {
+                throw new ObjectAlreadyExistsException($"Person with PersonalIdNumber {request.PersonalIdNumber} already exists.");
+            }
+
             var person = Person.Create(
             request.FirstName,
             request.LastName,
-            request.Gender ?? null,
+            request.Gender,
             request.PersonalIdNumber,
             request.BirthDay,
             request.PhoneNumbers?.Select(p => new PhoneNumber(p.Number, p.PhoneType)).ToList(),
             null
             );
 
-           var p =  _unitOfWork.PersonWriteRepository.Add(person);
-
+            _unitOfWork.PersonWriteRepository.Add(person);
             await _unitOfWork.CompleteAsync();
 
-            return p.Id;
+            return person.Id;
         }
     }
 }
