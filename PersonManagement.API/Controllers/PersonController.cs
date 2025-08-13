@@ -75,19 +75,6 @@ namespace PersonManagement.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a paginated list of all persons, optionally filtered and sorted.
-        /// </summary>
-        /// <param name="getPersonList">Query parameters for filtering, sorting, and pagination.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A paginated list of persons.</returns>
-        [HttpGet("GetAllPersons")]
-        public async Task<IActionResult> GetAllPersons([FromQuery] GetAllPersonsListQuery getPersonList, CancellationToken cancellationToken)
-        {
-            var result = await _mediator.Send(getPersonList, cancellationToken);
-            return Ok(result);
-        }
-
-        /// <summary>
         /// Retrieves a person by their ID.
         /// </summary>
         /// <param name="id">The ID of the person to retrieve.</param>
@@ -97,7 +84,19 @@ namespace PersonManagement.API.Controllers
         public async Task<IActionResult> GetPersonWithId(int id, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GetPersonWithIdQuery { Id = id }, cancellationToken);
-            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of all persons, optionally filtered and sorted.
+        /// </summary>
+        /// <param name="getPersonList">Query parameters for filtering, sorting, and pagination.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A paginated list of persons.</returns>
+        [HttpGet("GetAllPersons")]
+        public async Task<IActionResult> GetAllPersons([FromQuery] GetAllPersonsListQuery getPersonList, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(getPersonList, cancellationToken);
             return Ok(result);
         }
     }

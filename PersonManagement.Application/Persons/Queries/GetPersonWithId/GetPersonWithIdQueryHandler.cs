@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using PersonManagement.Application.DTOs;
+using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.RepoInterfaces;
 
 namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
@@ -16,6 +17,11 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
         {
             var person = await _personReadRepository.GetPersonWithDetailsAsync(request.Id);
 
+            if (person == null)
+            {
+                throw new NotFoundException($"Person with Id {request.Id} not found.");
+            }
+
             var result = new PersonDTO(
                     Id : person.Id,
                     FirstName: person.FirstName,
@@ -29,7 +35,8 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
                         PhoneType: p.PhoneType
                     )).ToList() ?? new List<PhoneNumberDto>(),
 
-                    RelatedPersons: person.RelatedPersons?.Select(rp => new RelatedPersonDTO(
+                    RelatedPersons: person.RelatedPersons?.Where(rp => rp.RelatedTo != null)
+                                                          .Select(rp => new RelatedPersonDTO(
                         RelatedPerson: new PersonDTO(
                             Id: rp.RelatedTo.Id,
                             FirstName: rp.RelatedTo.FirstName,
@@ -37,12 +44,18 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
                             Gender: rp.RelatedTo.Gender,
                             PersonalIdNumber: rp.RelatedTo.PersonalIdNumber,
                             BirthDay: rp.RelatedTo.BirthDay,
-                            PhoneNumbers:  new List<PhoneNumberDto>(),
+                            PhoneNumbers: rp.RelatedTo.PhoneNumbers?
+                                    .Select(pn => new PhoneNumberDto(
+                                        Number: pn.Number,
+                                        PhoneType: pn.PhoneType
+                                    ))
+                                    .ToList() ?? new List<PhoneNumberDto>(),
                             RelatedPersons: new List<RelatedPersonDTO>() 
                         ),
                         RelationshipType: rp.RelationshipType
                     )).ToList() ?? new List<RelatedPersonDTO>()
                 );
+
             return result;
             //TODO :related person ს არ აყოლებს 
             //TODO: როცა 3ს ვწერთ ერორია გამოსაკვლევია
