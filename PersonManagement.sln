@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonManagement.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonManagement.Shared", "PersonManagement.Shared\PersonManagement.Shared.csproj", "{EE01EB23-DFAE-4353-8163-5948A24483D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonManagement.Application.Tests", "PersonManagement.Tests\PersonManagement.Application.Tests.csproj", "{6B377EDB-AD17-45C4-B91A-14FAC73CBA62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EE01EB23-DFAE-4353-8163-5948A24483D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE01EB23-DFAE-4353-8163-5948A24483D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE01EB23-DFAE-4353-8163-5948A24483D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B377EDB-AD17-45C4-B91A-14FAC73CBA62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B377EDB-AD17-45C4-B91A-14FAC73CBA62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B377EDB-AD17-45C4-B91A-14FAC73CBA62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B377EDB-AD17-45C4-B91A-14FAC73CBA62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

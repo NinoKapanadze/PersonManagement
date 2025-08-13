@@ -34,7 +34,6 @@ namespace PersonManagement.Infrastructure.Configurations
                 .IsRequired();
 
             builder.HasQueryFilter(rp => !rp.IsDeleted);
-
         }
     }
 }

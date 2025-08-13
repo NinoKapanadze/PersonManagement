@@ -7,16 +7,9 @@
         public DateTime LastModifiedAt { get; protected set; }
         public bool IsDeleted { get; protected set; } = false;
 
-
         public virtual void MarkAsDeleted()
         {
             IsDeleted = true;
-            LastModifiedAt = DateTime.UtcNow;
-        }
-
-        public virtual void Reactivate()
-        {
-            IsDeleted = false;
             LastModifiedAt = DateTime.UtcNow;
         }
     }

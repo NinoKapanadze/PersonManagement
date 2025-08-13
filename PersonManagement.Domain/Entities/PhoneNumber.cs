@@ -9,7 +9,7 @@ namespace PersonManagement.Domain
         public int PersonId { get; private set; }
         public Person Person { get; private set; }
 
-        public PhoneNumber(string number, PhoneType phoneType)
+        private PhoneNumber(string number, PhoneType phoneType)
         {
             Number = number;
             PhoneType = phoneType;
@@ -19,5 +19,9 @@ namespace PersonManagement.Domain
         }
         //TODO: ამასაც იგივე სტილი ჩავუმატო როგორიც Person-შია
         private PhoneNumber() { }
+        public static PhoneNumber Create(string number, PhoneType phoneType)
+        {
+            return new PhoneNumber(number, phoneType);
+        }
     }
 }

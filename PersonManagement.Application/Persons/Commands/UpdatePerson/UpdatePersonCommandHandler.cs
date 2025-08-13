@@ -35,13 +35,13 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
                  request.Gender,
                  request.PersonalIdNumber,
                  request.BirthDay,
-                 request.PhoneNumbers.Select(pn => new PhoneNumber(pn.Number, pn.PhoneType)).ToList()
+                 request.PhoneNumbers.Select(pn => PhoneNumber.Create(pn.Number, pn.PhoneType)).ToList()
             );
 
             if(request.PhoneNumbers is not null) //თუ ცარიელია ტელეფონებს ვტოვებთ უცვლელად
             {
                 person.UpdatePhoneNumbers(
-                    request.PhoneNumbers.Select(pn => new PhoneNumber(pn.Number, pn.PhoneType)).ToList()
+                    request.PhoneNumbers.Select(pn => PhoneNumber.Create(pn.Number, pn.PhoneType)).ToList()
                 );
             }
 

@@ -109,6 +109,13 @@ namespace PersonManagement.Domain
                     PhoneNumbers.Add(item);
                 }
             }
+
+            var validator = new PersonValidator();
+            var validationResult = validator.Validate(this);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
         }
         //TODO: markasdeleted არის დასაoverrideბელი 
     }

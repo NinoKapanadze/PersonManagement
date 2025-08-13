@@ -10,7 +10,6 @@ namespace PersonManagement.Application.RepoInterfaces
         Task CommitTransactionAsync(CancellationToken cancellationToken);
         Task RollbackTransactionAsync(CancellationToken cancellationToken);
         IPersonWriteRepository PersonWriteRepository { get; }
-        IRelatedPersonWriteRepository RelatedPersonWriteRepository { get;
-        }   
+        IRelatedPersonWriteRepository RelatedPersonWriteRepository { get;}   
     }
 }
