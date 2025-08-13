@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using PersonManagement.Application.Common;
+using System.Linq.Expressions;
 
 namespace PersonManagement.Application.RepoInterfaces.Base
 {
@@ -22,13 +23,23 @@ namespace PersonManagement.Application.RepoInterfaces.Base
         /// </summary>
         /// <param name="predicate">The predicate to filter entities.</param>
         /// <returns>The first entity that satisfies the predicate, or null if not found.</returns>
-        Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate);
-
+        public Task<TEntity?> GetSingleAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null);
+        
         /// <summary>
         /// Checks if any entity in the repository satisfies a given predicate.
         /// </summary>
         /// <param name="predicate">The predicate to check against entities.</param>
         /// <returns>True if any entity satisfies the predicate; otherwise, false.</returns>
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> Query();
+        public Task<PagedResult<TEntity>> GetPagedListAsync(int pageIndex,
+                                                     int pageSize,
+                                                     Expression<Func<TEntity, bool>> filter = null,
+                                                     string[] includeProperties = null,
+                                                     string orderBy = null,
+                                                     bool descending = false,
+                                                     CancellationToken cancellationToken = default);
     }
 }

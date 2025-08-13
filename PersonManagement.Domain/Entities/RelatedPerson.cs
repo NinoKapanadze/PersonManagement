@@ -4,15 +4,15 @@ namespace PersonManagement.Domain
 {
     public class RelatedPerson : BaseEntity<int>
     {
-        public int PersonId { get; private set; }      // The main person
+        public int PersonId { get; private set; }     
         public Person Person { get; private set; }
 
-        public int RelatedToId { get; private set; }   // The related person
+        public int RelatedToId { get; private set; }  
         public Person RelatedTo { get; private set; }
 
         public RelationshipType RelationshipType { get; private set; }
 
-        private RelatedPerson() { } // EF constructor
+        private RelatedPerson() { } 
 
         public RelatedPerson(int personId, int relatedToId, RelationshipType relationshipType)
         {
@@ -22,6 +22,8 @@ namespace PersonManagement.Domain
             CreatedDate = DateTime.UtcNow;
             IsDeleted = false;
         }
+
+
     }
     
 }

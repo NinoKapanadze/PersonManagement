@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PersonManagement.Application.Interfaces;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 using PersonManagement.Infrastructure.Repositories;
@@ -11,13 +12,16 @@ namespace PersonManagement.Infrastructure.UoW
         private readonly DataContext _dbContext;
          private readonly ILogger<WriteRepository<Person>> _personLogger;
         public IPersonWriteRepository PersonWriteRepository { get; private set; }
+        public IRelatedPersonWriteRepository RelatedPersonWriteRepository { get; private set; }
 
-        public UnitOfWork(DataContext dbContext, ILogger<WriteRepository<Person>> personLogger)
+        public UnitOfWork(DataContext dbContext, ILogger<WriteRepository<Person>> personLogger, IPersonWriteRepository personWriteRepository, IRelatedPersonWriteRepository relatedPersonWriteRepository )
         {
             _dbContext = dbContext;
             _personLogger = personLogger;
 
-            PersonWriteRepository = new PersonWriteRepository(personLogger, dbContext);
+            //PersonWriteRepository = new PersonWriteRepository(personLogger, dbContext);
+            RelatedPersonWriteRepository = relatedPersonWriteRepository;
+            PersonWriteRepository = personWriteRepository;
         }
 
         public async Task CompleteAsync()

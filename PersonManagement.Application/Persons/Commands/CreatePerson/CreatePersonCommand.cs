@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation.Validators;
+using MediatR;
 using PersonManagement.Application.DTOs;
 
 namespace PersonManagement.Application.Persons.Commands.CreatePerson
@@ -10,7 +11,7 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
     string PersonalIdNumber,
     DateOnly BirthDay,
     List<PhoneNumberDto> PhoneNumbers
-) : PersonDTO(FirstName, LastName, Gender, PersonalIdNumber, BirthDay, PhoneNumbers),
+) :
     IRequest<int>;
 
 }

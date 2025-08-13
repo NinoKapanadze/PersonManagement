@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PersonManagement.Application.RepoInterfaces.Base;
+using PersonManagement.Domain;
 
 namespace PersonManagement.Infrastructure.Repositories.Base
 {
-    public class WriteRepository<TEntity> : IWriteRepository<TEntity> where TEntity : class
+    public class WriteRepository<TEntity> : IWriteRepository<TEntity> where TEntity : BaseEntity<int>
     {
         private protected readonly ILogger<WriteRepository<TEntity>> _logger;
         protected readonly DataContext _dbContext;
@@ -29,8 +30,10 @@ namespace PersonManagement.Infrastructure.Repositories.Base
                     return false;
                 }
 
-                _dbSet.Remove(entity);
-                _logger.LogInformation("Removing model from DB context. Model - {model}", entity.GetType().Name);
+                entity.MarkAsDeleted();
+                _dbSet.Update(entity);
+
+                _logger.LogInformation("Soft - deleted model in DB context.Model - { model}, Id - { id}", entity.GetType().Name, entity.Id);
                 return true;
             }
             catch (Exception ex)

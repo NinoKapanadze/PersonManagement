@@ -1,4 +1,5 @@
-﻿using PersonManagement.Application.RepoInterfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 using PersonManagement.Infrastructure.Repositories.Base;
 
@@ -10,5 +11,14 @@ namespace PersonManagement.Infrastructure.Repositories
         {
             
         }
+
+        public async Task<Person?> GetPersonWithDetailsAsync(int id)
+        {
+            return await _dbContext.Persons
+                .Include(p => p.RelatedPersons)
+                .Include(p => p.PhoneNumbers)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
     }
 }

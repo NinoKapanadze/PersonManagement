@@ -1,4 +1,7 @@
-﻿namespace PersonManagement.Domain
+﻿using FluentValidation;
+using PersonManagement.Domain.Validators;
+
+namespace PersonManagement.Domain
 {
     public class Person : BaseEntity<int>
     {
@@ -33,27 +36,15 @@
         }
 
         public static Person Create(
-            string firstName,
-            string lastName,
-            bool? gender,
-            string personalIdNumber,
-            DateOnly birthDay,
-            List<PhoneNumber>? phoneNumbers = null,
-            List<RelatedPerson>? relatedPersons = null)
+                string firstName,
+                string lastName,
+                bool? gender,
+                string personalIdNumber,
+                DateOnly birthDay,
+                List<PhoneNumber>? phoneNumbers = null,
+                List<RelatedPerson>? relatedPersons = null)
         {
-            if (string.IsNullOrWhiteSpace(firstName))
-                throw new ArgumentException("First name is required.", nameof(firstName));
-
-            if (string.IsNullOrWhiteSpace(lastName))
-                throw new ArgumentException("Last name is required.", nameof(lastName));
-
-            if (string.IsNullOrWhiteSpace(personalIdNumber))
-                throw new ArgumentException("Personal ID number is required.", nameof(personalIdNumber));
-
-            if (birthDay == default)
-                throw new ArgumentException("Birth date is required.", nameof(birthDay));
-
-            return new Person(
+            var person = new Person(
                 firstName,
                 lastName,
                 gender,
@@ -62,6 +53,45 @@
                 phoneNumbers ?? new List<PhoneNumber>(),
                 relatedPersons ?? new List<RelatedPerson>()
             );
+
+            var validator = new PersonValidator();
+            var validationResult = validator.Validate(person);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            return person;
+        }
+
+
+        public void Update(
+                string firstName,
+                string lastName,
+                bool? gender,
+                string personalIdNumber,
+                DateOnly birthDay,
+                List<PhoneNumber>? phoneNumbers = null)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+            PersonalIdNumber = personalIdNumber;
+            BirthDay = birthDay;
+
+            if (phoneNumbers != null)
+            {
+                PhoneNumbers = phoneNumbers;
+            }
+
+            var validator = new PersonValidator();
+            var validationResult = validator.Validate(this);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
         }
     }
 }
