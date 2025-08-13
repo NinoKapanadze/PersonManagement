@@ -57,8 +57,6 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
                 );
 
             return result;
-            //TODO :related person ს არ აყოლებს 
-            //TODO: როცა 3ს ვწერთ ერორია გამოსაკვლევია
             //TODO: logireba
         }
     }

@@ -12,9 +12,9 @@ namespace PersonManagement.Infrastructure.UoW
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DataContext _dbContext;
-         private readonly ILogger<WriteRepository<Person>> _personLogger;
+        private readonly ILogger<WriteRepository<Person>> _personLogger;
         private IDbContextTransaction _currentTransaction;
-
+        //TODO: logging?
         public IPersonWriteRepository PersonWriteRepository { get; private set; }
         public IRelatedPersonWriteRepository RelatedPersonWriteRepository { get; private set; }
 

@@ -51,6 +51,5 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonsList
                 pageSize: person.PageSize
             );
         }
-
     }
 }

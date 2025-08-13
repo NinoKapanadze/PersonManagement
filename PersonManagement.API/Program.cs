@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PersonManagement.API;
+using PersonManagement.API.Middlewares;
 using PersonManagement.Application;
 using PersonManagement.Infrastructure;
 
@@ -17,6 +18,7 @@ builder.Services
         });
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
