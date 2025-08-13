@@ -24,9 +24,9 @@ namespace PersonManagement.Infrastructure.UoW
             PersonWriteRepository = personWriteRepository;
         }
 
-        public async Task CompleteAsync()
+        public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public void Dispose()

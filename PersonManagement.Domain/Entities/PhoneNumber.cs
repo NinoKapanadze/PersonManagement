@@ -17,5 +17,7 @@ namespace PersonManagement.Domain
             CreatedDate = DateTime.UtcNow;
             IsDeleted = false;
         }
+        //TODO: ამასაც იგივე სტილი ჩავუმატო როგორიც Person-შია
+        private PhoneNumber() { }
     }
 }

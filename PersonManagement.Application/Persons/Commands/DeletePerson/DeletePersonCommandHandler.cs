@@ -22,7 +22,7 @@ namespace PersonManagement.Application.Persons.Commands.DeletePerson
             }
             var result = _unitOfWork.PersonWriteRepository.Delete(person);
 
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync(cancellationToken);
 
             return result;
         }

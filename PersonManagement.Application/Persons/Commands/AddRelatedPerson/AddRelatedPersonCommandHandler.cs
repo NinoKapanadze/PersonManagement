@@ -36,7 +36,7 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
             );
 
             _unitOfWork.PersonWriteRepository.Add(person);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync(cancellationToken);
 
             var relatedPerson = new RelatedPerson(
                 person.Id,
@@ -45,7 +45,7 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
             );
 
              _unitOfWork.RelatedPersonWriteRepository.Add(relatedPerson);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync(cancellationToken);
 
             //TODO: დდდ
             //TODO: rollback to add

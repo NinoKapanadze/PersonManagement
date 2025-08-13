@@ -27,12 +27,17 @@ namespace PersonManagement.Infrastructure.Repositories.Base
         }
 
         public async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate,
-             Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+             string[] include = null)
         {
             IQueryable<TEntity> query = _dbSet;
 
             if (include != null)
-                query = include(query);
+            {
+                foreach (var includeProperty in include)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
 
             return await query.FirstOrDefaultAsync(predicate);
         }

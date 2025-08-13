@@ -32,7 +32,7 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
             );
 
             _unitOfWork.PersonWriteRepository.Add(person);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync(cancellationToken);
 
             return person.Id;
         }

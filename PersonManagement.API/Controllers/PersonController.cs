@@ -36,6 +36,19 @@ namespace PersonManagement.API.Controllers
         }
 
         /// <summary>
+        /// Updates an existing person.
+        /// </summary>
+        /// <param name="updatePersonCommand">The updated person data.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The updated person, or NotFound if the person does not exist.</returns>
+        [HttpPut("UpdatePerson")]
+        public async Task<IActionResult> UpdatePerson(UpdatePersonCommand updatePersonCommand, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(updatePersonCommand, cancellationToken);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Adds Related Person to existing person.
         /// </summary>
         /// <param name="createPersonCommand">The person data to create.</param>
@@ -84,20 +97,6 @@ namespace PersonManagement.API.Controllers
         public async Task<IActionResult> GetPersonWithId(int id, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GetPersonWithIdQuery { Id = id }, cancellationToken);
-            if (result == null) return NotFound();
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Updates an existing person.
-        /// </summary>
-        /// <param name="updatePersonCommand">The updated person data.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The updated person, or NotFound if the person does not exist.</returns>
-        [HttpPut("UpdatePerson")]
-        public async Task<IActionResult> UpdatePerson(UpdatePersonCommand updatePersonCommand, CancellationToken cancellationToken)
-        {
-            var result = await _mediator.Send(updatePersonCommand, cancellationToken);
             if (result == null) return NotFound();
             return Ok(result);
         }

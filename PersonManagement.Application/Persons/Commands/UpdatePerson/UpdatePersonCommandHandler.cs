@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using PersonManagement.Application.DTOs;
+using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 using System;
@@ -21,10 +22,13 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
         }
         public async Task<PersonDTO> Handle(UpdatePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _personReadRepository.GetSingleAsync(p=> p.Id == request.Id);
+            var person = await _personReadRepository.GetSingleAsync(
+                        p => p.Id == request.Id,
+                        include: new []{ "PhoneNumbers" });
 
             if (person == null)
-                throw new KeyNotFoundException($"Person with Id {request.Id} not found.");
+                throw new NotFoundException($"Person with Id {request.Id} not found.");
+
             person.Update(
                  request.FirstName,
                  request.LastName,
@@ -34,9 +38,15 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
                  request.PhoneNumbers.Select(pn => new PhoneNumber(pn.Number, pn.PhoneType)).ToList()
             );
 
+            if(request.PhoneNumbers is not null) //თუ ცარიელია ტელეფონებს ვტოვებთ უცვლელად
+            {
+                person.UpdatePhoneNumbers(
+                    request.PhoneNumbers.Select(pn => new PhoneNumber(pn.Number, pn.PhoneType)).ToList()
+                );
+            }
 
             _unitOfWork.PersonWriteRepository.Update(person);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync(cancellationToken);
 
             return new PersonDTO(
                 Id: person.Id,
@@ -45,7 +55,8 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
                 Gender: person.Gender,
                 PersonalIdNumber: person.PersonalIdNumber,
                 BirthDay: person.BirthDay,
-                PhoneNumbers: person.PhoneNumbers.Select(pn => new PhoneNumberDto(
+                PhoneNumbers: person.PhoneNumbers.Where(pn => !pn.IsDeleted)
+                                                 .Select(pn => new PhoneNumberDto(
                     Number: pn.Number,
                     PhoneType: pn.PhoneType
                 )).ToList(),

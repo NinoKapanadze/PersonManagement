@@ -80,17 +80,34 @@ namespace PersonManagement.Domain
             PersonalIdNumber = personalIdNumber;
             BirthDay = birthDay;
 
-            if (phoneNumbers != null)
-            {
-                PhoneNumbers = phoneNumbers;
-            }
-
             var validator = new PersonValidator();
             var validationResult = validator.Validate(this);
 
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
+            }
+        }
+
+        public void UpdatePhoneNumbers(IEnumerable<PhoneNumber> newNumbers)
+        {
+
+            foreach (var phone in PhoneNumbers)
+            {
+                if (newNumbers.Any(newPhone => newPhone.Number == phone.Number && newPhone.PhoneType == phone.PhoneType) == false)
+                {
+                    phone.MarkAsDeleted();
+                }
+            }
+
+            foreach (var item in newNumbers)
+            { // TODO: აქ ვალიდაციები დასამატებელი მაქვს???
+                var existingPhone = PhoneNumbers.FirstOrDefault(p => p.Number == item.Number && p.PhoneType == item.PhoneType);
+
+                if (existingPhone == null)
+                {
+                    PhoneNumbers.Add(item);
+                }
             }
         }
     }

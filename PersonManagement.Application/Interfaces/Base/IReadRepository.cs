@@ -23,10 +23,9 @@ namespace PersonManagement.Application.RepoInterfaces.Base
         /// </summary>
         /// <param name="predicate">The predicate to filter entities.</param>
         /// <returns>The first entity that satisfies the predicate, or null if not found.</returns>
-        public Task<TEntity?> GetSingleAsync(
-            Expression<Func<TEntity, bool>> predicate,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null);
-        
+        public  Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate,
+              string[] include = null);
+
         /// <summary>
         /// Checks if any entity in the repository satisfies a given predicate.
         /// </summary>
