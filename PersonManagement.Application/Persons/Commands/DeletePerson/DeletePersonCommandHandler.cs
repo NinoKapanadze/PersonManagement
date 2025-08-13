@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.RepoInterfaces;
 
 namespace PersonManagement.Application.Persons.Commands.DeletePerson
@@ -18,11 +19,11 @@ namespace PersonManagement.Application.Persons.Commands.DeletePerson
 
             if (person == null)
             {
-                throw new KeyNotFoundException($"Person with ID {request.Id} not found.");
+                throw new NotFoundException($"Person with ID {request.Id} not found.");
             }
             var result = _unitOfWork.PersonWriteRepository.Delete(person);
 
-            await _unitOfWork.CompleteAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return result;
         }

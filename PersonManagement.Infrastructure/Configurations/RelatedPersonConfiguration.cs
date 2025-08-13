@@ -8,7 +8,7 @@ namespace PersonManagement.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<RelatedPerson> builder)
         {
-            builder.HasKey(rp => new {rp.PersonId, rp.RelatedToId});
+            builder.HasKey(rp => rp.Id);
 
             builder.HasOne(rp => rp.RelatedTo)
                  .WithMany()

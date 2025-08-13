@@ -110,5 +110,6 @@ namespace PersonManagement.Domain
                 }
             }
         }
+        //TODO: markasdeleted არის დასაoverrideბელი 
     }
 }

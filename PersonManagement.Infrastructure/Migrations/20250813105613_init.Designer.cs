@@ -12,7 +12,7 @@ using PersonManagement.Infrastructure;
 namespace PersonManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250809135253_init")]
+    [Migration("20250813105613_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -108,17 +108,14 @@ namespace PersonManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("PersonManagement.Domain.RelatedPerson", b =>
                 {
-                    b.Property<int>("PersonId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("RelatedToId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -126,11 +123,19 @@ namespace PersonManagement.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RelatedToId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RelationshipType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PersonId", "RelatedToId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.HasIndex("RelatedToId");
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 using System.Reflection;
@@ -21,38 +22,44 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
 
             if (!relatedPersonExists)
             {
-                throw new Exception("Related person does not exist.");
+                throw new NotFoundException("Related person does not exist.");
             }
 
-            // 1. Create Person without related persons
-            var person = Person.Create(
-            request.FirstName,
-            request.LastName,
-            request.Gender ?? null,
-            request.PersonalIdNumber,
-            request.BirthDay,
-            request.PhoneNumbers?.Select(p => new PhoneNumber(p.Number, p.PhoneType)).ToList(),
-            null
-            );
+            await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                var person = Person.Create(
+                  request.FirstName,
+                  request.LastName,
+                  request.Gender ?? null,
+                  request.PersonalIdNumber,
+                  request.BirthDay,
+                  request.PhoneNumbers?.Select(p => new PhoneNumber(p.Number, p.PhoneType)).ToList(),
+                  null);
 
-            _unitOfWork.PersonWriteRepository.Add(person);
-            await _unitOfWork.CompleteAsync(cancellationToken);
+                _unitOfWork.PersonWriteRepository.Add(person);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var relatedPerson = new RelatedPerson(
-                person.Id,
-                request.RelatedPersonId,
-                request.RelationshipType
-            );
+                var relatedTo = new RelatedPerson(
+                    person.Id,
+                    request.RelatedPersonId,
+                    request.RelationshipType
+                );
 
-             _unitOfWork.RelatedPersonWriteRepository.Add(relatedPerson);
-            await _unitOfWork.CompleteAsync(cancellationToken);
+                _unitOfWork.RelatedPersonWriteRepository.Add(relatedTo);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            //TODO: დდდ
-            //TODO: rollback to add
+                await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
-            return person.Id;
+                return person.Id;
+      
+            }
+            catch 
+            {
+                await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                throw;
+            }
+              
         }
     }
-    
-    
 }

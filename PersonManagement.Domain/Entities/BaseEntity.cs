@@ -8,13 +8,13 @@
         public bool IsDeleted { get; protected set; } = false;
 
 
-        public void MarkAsDeleted()
+        public virtual void MarkAsDeleted()
         {
             IsDeleted = true;
             LastModifiedAt = DateTime.UtcNow;
         }
 
-        public void Reactivate()
+        public virtual void Reactivate()
         {
             IsDeleted = false;
             LastModifiedAt = DateTime.UtcNow;

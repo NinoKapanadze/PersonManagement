@@ -5,7 +5,10 @@ namespace PersonManagement.Application.RepoInterfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task CompleteAsync(CancellationToken cancellationToken);
+        Task SaveChangesAsync(CancellationToken cancellationToken);
+        Task BeginTransactionAsync(CancellationToken cancellationToken);
+        Task CommitTransactionAsync(CancellationToken cancellationToken);
+        Task RollbackTransactionAsync(CancellationToken cancellationToken);
         IPersonWriteRepository PersonWriteRepository { get; }
         IRelatedPersonWriteRepository RelatedPersonWriteRepository { get;
         }   

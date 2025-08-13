@@ -59,17 +59,18 @@ namespace PersonManagement.Infrastructure.Migrations
                 name: "RelatedPersons",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     RelatedToId = table.Column<int>(type: "int", nullable: false),
                     RelationshipType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RelatedPersons", x => new { x.PersonId, x.RelatedToId });
+                    table.PrimaryKey("PK_RelatedPersons", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RelatedPersons_Persons_PersonId",
                         column: x => x.PersonId,
@@ -87,6 +88,11 @@ namespace PersonManagement.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PhoneNumber_PersonId",
                 table: "PhoneNumber",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RelatedPersons_PersonId",
+                table: "RelatedPersons",
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(

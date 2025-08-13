@@ -46,7 +46,7 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
             }
 
             _unitOfWork.PersonWriteRepository.Update(person);
-            await _unitOfWork.CompleteAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new PersonDTO(
                 Id: person.Id,
