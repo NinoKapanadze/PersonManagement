@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PersonManagement.Application.Common;
 using PersonManagement.Application.RepoInterfaces.Base;
+using PersonManagement.Shared;
 using System.Linq.Expressions;
 
 namespace PersonManagement.Infrastructure.Repositories.Base

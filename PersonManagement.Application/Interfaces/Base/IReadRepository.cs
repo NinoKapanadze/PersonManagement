@@ -1,4 +1,4 @@
-﻿using PersonManagement.Application.Common;
+﻿using PersonManagement.Shared;
 using System.Linq.Expressions;
 
 namespace PersonManagement.Application.RepoInterfaces.Base

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using PersonManagement.Application.Common;
 using PersonManagement.Application.DTOs;
+using PersonManagement.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

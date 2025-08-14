@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using PersonManagement.Application.Common;
 using PersonManagement.Application.DTOs;
 using PersonManagement.Application.RepoInterfaces;
+using PersonManagement.Shared;
 
 namespace PersonManagement.Application.Persons.Queries.GetPersonsList
 {
