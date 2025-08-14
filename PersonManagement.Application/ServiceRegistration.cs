@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PersonManagement.Application.MappingProfiles;
 using System.Reflection;
 
 namespace PersonManagement.Application

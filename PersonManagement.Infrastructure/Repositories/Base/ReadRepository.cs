@@ -29,7 +29,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
         public async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate,
              string[] include = null)
         {
-            IQueryable<TEntity> query = _dbSet;
+            IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
             if (include != null)
             {
@@ -59,7 +59,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
                                                       bool descending = false,
                                                       CancellationToken cancellationToken = default)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>().AsNoTracking();
 
             if (filter != null)
                 query = query.Where(filter);

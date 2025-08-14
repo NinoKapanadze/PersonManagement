@@ -101,7 +101,7 @@ namespace PersonManagement.Domain
             }
 
             foreach (var item in newNumbers)
-            { // TODO: აქ ვალიდაციები დასამატებელი მაქვს???
+            { 
                 var existingPhone = PhoneNumbers.FirstOrDefault(p => p.Number == item.Number && p.PhoneType == item.PhoneType);
 
                 if (existingPhone == null)
@@ -117,6 +117,5 @@ namespace PersonManagement.Domain
                 throw new ValidationException(validationResult.Errors);
             }
         }
-        //TODO: markasdeleted არის დასაoverrideბელი 
     }
 }

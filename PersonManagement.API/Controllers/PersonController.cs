@@ -40,7 +40,7 @@ namespace PersonManagement.API.Controllers
         /// </summary>
         /// <param name="updatePersonCommand">The updated person data.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The updated person, or NotFound if the person does not exist.</returns>
+        /// <returns>The updated person.</returns>
         [HttpPut("UpdatePerson")]
         public async Task<IActionResult> UpdatePerson(UpdatePersonCommand updatePersonCommand, CancellationToken cancellationToken)
         {
@@ -49,7 +49,7 @@ namespace PersonManagement.API.Controllers
         }
 
         /// <summary>
-        /// Adds Related Person to existing person.
+        /// Adds person and add relationship to an existing person.
         /// </summary>
         /// <param name="createPersonCommand">The person data to create.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
@@ -75,15 +75,15 @@ namespace PersonManagement.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a person by their ID.
+        /// Retrieves a person with details by their ID.
         /// </summary>
         /// <param name="id">The ID of the person to retrieve.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The person with the specified ID, or NotFound if not found.</returns>
+        /// <returns>The person with the specified ID.</returns>
         [HttpGet("GetPersonWithId/{id}")]
         public async Task<IActionResult> GetPersonWithId(int id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetPersonWithIdQuery { Id = id }, cancellationToken);
+            var result = await _mediator.Send(new GetPersonWithIdQuery (id), cancellationToken);
             return Ok(result);
         }
 
@@ -101,4 +101,3 @@ namespace PersonManagement.API.Controllers
         }
     }
 }
-//TODO: deal with HTTP request scratch file.

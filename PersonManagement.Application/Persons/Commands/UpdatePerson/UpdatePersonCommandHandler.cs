@@ -17,8 +17,8 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
         private readonly IPersonReadRepository _personReadRepository;  
         public UpdatePersonCommandHandler(IUnitOfWork unitOfWork, IPersonReadRepository personReadRepository)
         {
-            _unitOfWork = unitOfWork;
-            _personReadRepository = personReadRepository;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _personReadRepository = personReadRepository ?? throw new ArgumentNullException(nameof(personReadRepository));
         }
         public async Task<PersonDTO> Handle(UpdatePersonCommand request, CancellationToken cancellationToken)
         {

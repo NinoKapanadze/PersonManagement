@@ -13,10 +13,8 @@ namespace PersonManagement.Infrastructure.UoW
     {
         private readonly DataContext _dbContext;
         private IDbContextTransaction _currentTransaction;
-        //TODO: logging?
         public IPersonWriteRepository PersonWriteRepository { get; private set; }
         public IRelatedPersonWriteRepository RelatedPersonWriteRepository { get; private set; }
-
         public UnitOfWork(DataContext dbContext,
                       IPersonWriteRepository personWriteRepository,
                       IRelatedPersonWriteRepository relatedPersonWriteRepository)

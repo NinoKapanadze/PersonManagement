@@ -11,8 +11,8 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
         private readonly IPersonReadRepository _personReadRepository;
         public CreatePersonCommandHandler(IUnitOfWork unitOfWork, IPersonReadRepository personReadRepository)
         {
-            _unitOfWork = unitOfWork;
-            _personReadRepository = personReadRepository;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _personReadRepository = personReadRepository ?? throw new ArgumentNullException(nameof(personReadRepository));
         }
         public async Task<int> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
         {

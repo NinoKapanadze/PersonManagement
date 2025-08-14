@@ -57,7 +57,6 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
                 );
 
             return result;
-            //TODO: logireba
         }
     }
 }
