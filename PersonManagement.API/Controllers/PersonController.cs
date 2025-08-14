@@ -101,4 +101,4 @@ namespace PersonManagement.API.Controllers
         }
     }
 }
-//TODO: ყველგან cancellation tokenის დამატება
+//TODO: deal with HTTP request scratch file.

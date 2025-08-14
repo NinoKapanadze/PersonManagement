@@ -53,9 +53,9 @@ namespace PersonManagement.Infrastructure.Repositories.Base
         }
         public async Task<PagedResult<TEntity>> GetPagedListAsync(int pageIndex,
                                                       int pageSize,
-                                                      Expression<Func<TEntity, bool>> filter = null,
-                                                      string[] includeProperties = null,
-                                                      string orderBy = null,
+                                                      Expression<Func<TEntity, bool>>? filter = null,
+                                                      string[]? includeProperties = null,
+                                                      string? orderBy = null,
                                                       bool descending = false,
                                                       CancellationToken cancellationToken = default)
         {

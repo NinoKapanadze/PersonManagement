@@ -10,7 +10,6 @@ namespace PersonManagement.Infrastructure.Configurations
         {
             builder.HasKey(p => p.Id);
 
-            // Number column
             builder.Property(p => p.Number)
                 .IsRequired()
                 .HasMaxLength(50);

@@ -14,7 +14,7 @@ namespace PersonManagement.Domain
 
         private RelatedPerson() { } 
 
-        public RelatedPerson(int personId, int relatedToId, RelationshipType relationshipType)
+        private RelatedPerson(int personId, int relatedToId, RelationshipType relationshipType)
         {
             PersonId = personId;
             RelatedToId = relatedToId;
@@ -22,7 +22,10 @@ namespace PersonManagement.Domain
             CreatedDate = DateTime.UtcNow;
             IsDeleted = false;
         }
-
+        public static RelatedPerson Create(int personId, int relatedToId, RelationshipType relationshipType)
+        {
+            return new RelatedPerson(personId, relatedToId, relationshipType);
+        }
 
     }
     

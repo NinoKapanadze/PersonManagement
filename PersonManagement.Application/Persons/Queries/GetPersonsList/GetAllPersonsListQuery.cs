@@ -16,7 +16,7 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonsList
     int Page,
     int PageSize
     ) : IRequest<PagedResult<PersonDTO>>;
-    
-    
-   
+
+
+
 }

@@ -31,19 +31,21 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
                 var person = Person.Create(
                   request.FirstName,
                   request.LastName,
-                  request.Gender ?? null,
+                  request.Gender,
                   request.PersonalIdNumber,
                   request.BirthDay,
-                  request.PhoneNumbers?.Select(p => new PhoneNumber(p.Number, p.PhoneType)).ToList(),
+                  request.PhoneNumbers?
+                            .Select(p => PhoneNumber.Create(p.Number, p.PhoneType))
+                            .ToList(),
                   null);
 
                 _unitOfWork.PersonWriteRepository.Add(person);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                var relatedTo = new RelatedPerson(
-                    person.Id,
-                    request.RelatedPersonId,
-                    request.RelationshipType
+                var relatedTo =  RelatedPerson.Create(
+                                    person.Id,
+                                    request.RelatedPersonId,
+                                    request.RelationshipType
                 );
 
                 _unitOfWork.RelatedPersonWriteRepository.Add(relatedTo);

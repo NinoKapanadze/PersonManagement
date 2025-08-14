@@ -27,7 +27,7 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
             request.Gender,
             request.PersonalIdNumber,
             request.BirthDay,
-            request.PhoneNumbers?.Select(p => new PhoneNumber(p.Number, p.PhoneType)).ToList(),
+            request.PhoneNumbers?.Select(p => PhoneNumber.Create(p.Number, p.PhoneType)).ToList(),
             null
             );
 
