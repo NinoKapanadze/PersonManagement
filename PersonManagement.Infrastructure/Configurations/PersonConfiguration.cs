@@ -12,8 +12,7 @@ namespace PersonManagement.Infrastructure.Configurations
 
             builder.HasMany(p => p.RelatedPersons)
                 .WithOne(rp => rp.Person)
-                .HasForeignKey(rp => rp.PersonId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(rp => rp.PersonId);
 
             builder.Property(p => p.FirstName)
              .IsRequired()

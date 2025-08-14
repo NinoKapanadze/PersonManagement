@@ -13,11 +13,10 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
         public AddRelatedPersonCommandHandler(IUnitOfWork unitOfWork, IPersonReadRepository personReadRepository)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));    
-            _personReadRepository = personReadRepository;
+            _personReadRepository = personReadRepository ?? throw new ArgumentNullException(nameof(personReadRepository));
         }
         public async  Task<int> Handle(AddRelatedPersonCommand request, CancellationToken cancellationToken)
         {
-
             var relatedPersonExists = await _personReadRepository.AnyAsync(p => p.Id == request.RelatedPersonId);
 
             if (!relatedPersonExists)

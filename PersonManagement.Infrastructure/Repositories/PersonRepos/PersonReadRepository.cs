@@ -7,7 +7,7 @@ namespace PersonManagement.Infrastructure.Repositories
 {
     public class PersonReadRepository : ReadRepository<Person>, IPersonReadRepository
     {
-        public PersonReadRepository( DataContext dbContext) : base(dbContext)
+        public PersonReadRepository(DataContext dbContext) : base(dbContext)
         {
             
         }

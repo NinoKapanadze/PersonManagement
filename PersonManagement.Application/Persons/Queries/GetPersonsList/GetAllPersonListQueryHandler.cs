@@ -8,11 +8,11 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonsList
     public class GetAllPersonListQueryHandler : IRequestHandler<GetAllPersonsListQuery, PagedResult<PersonDTO>>
     {
         private readonly IPersonReadRepository _personReadRepository;
-        private static readonly string[] includeProperties = new[] { "PhoneNumbers" };
+        private static readonly string[] includeProperties = { "PhoneNumbers" };
 
         public GetAllPersonListQueryHandler(IPersonReadRepository personReadRepository)
         {
-            _personReadRepository = personReadRepository;
+            _personReadRepository = personReadRepository ?? throw new ArgumentNullException(nameof(personReadRepository));
         }
 
         public async Task<PagedResult<PersonDTO>> Handle(GetAllPersonsListQuery request, CancellationToken cancellationToken)

@@ -20,8 +20,7 @@ namespace PersonManagement.Infrastructure.Configurations
 
             builder.HasOne(p => p.Person)
                 .WithMany(pers => pers.PhoneNumbers)
-                .HasForeignKey(p => p.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(p => p.PersonId);
 
             builder.Property(p => p.CreatedDate)
                 .HasDefaultValueSql("GETUTCDATE()");
