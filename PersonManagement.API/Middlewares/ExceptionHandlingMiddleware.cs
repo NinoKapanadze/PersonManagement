@@ -1,4 +1,5 @@
-﻿using PersonManagement.Application.Exceptions;
+﻿using FluentValidation;
+using PersonManagement.Application.Exceptions;
 
 namespace PersonManagement.API.Middlewares
 {
@@ -54,6 +55,8 @@ namespace PersonManagement.API.Middlewares
             {
                 NotFoundException ex => (404, ex.Code, ex.Title, ex.Message),
                 ObjectAlreadyExistsException ex => (409, ex.Code, ex.Title, ex.Message),
+                ValidationException ex => (400, "ValidationError", "Validation Error",
+                string.Join(", ", ex.Errors.Select(e => e.ErrorMessage))),
                 AppException ex => (400, ex.Code, ex.Title, ex.Message),
                 _ => (500, "InternalServerError", "An unexpected error occurred", exception.Message)
             };
