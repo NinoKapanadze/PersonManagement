@@ -16,18 +16,18 @@ namespace PersonManagement.Infrastructure.Repositories.Base
             _dbSet = dbContext.Set<TEntity>();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate,
-             string[] include = null)
+             string[]? include = null , CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
@@ -39,18 +39,14 @@ namespace PersonManagement.Infrastructure.Repositories.Base
                 }
             }
 
-            return await query.FirstOrDefaultAsync(predicate);
+            return await query.FirstOrDefaultAsync(predicate, cancellationToken);
         }
 
-        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.AsNoTracking().AnyAsync(predicate);
+            return await _dbSet.AsNoTracking().AnyAsync(predicate, cancellationToken);
         }
 
-        public IQueryable<TEntity> Query()
-        {
-            return _dbContext.Set<TEntity>().AsQueryable().AsNoTracking();
-        }
         public async Task<PagedResult<TEntity>> GetPagedListAsync(int pageIndex,
                                                       int pageSize,
                                                       Expression<Func<TEntity, bool>>? filter = null,

@@ -12,7 +12,9 @@ namespace PersonManagement.Infrastructure.Configurations
 
             builder.HasOne(rp => rp.RelatedTo)
                  .WithMany()
-                 .HasForeignKey(rp => rp.RelatedToId);
+                 .HasForeignKey(rp => rp.RelatedToId)
+                 .OnDelete(DeleteBehavior.Restrict); 
+
 
             builder.Property(rp => rp.RelationshipType)
                 .HasConversion<string>();

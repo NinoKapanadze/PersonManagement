@@ -12,12 +12,12 @@ namespace PersonManagement.Infrastructure.Repositories
             
         }
 
-        public async Task<Person?> GetPersonWithDetailsAsync(int id)
+        public async Task<Person?> GetPersonWithDetailsAsync(int id, CancellationToken cacnellationToken)
         {
             return await _dbContext.Persons
                 .Include(p => p.RelatedPersons).ThenInclude(rp => rp.RelatedTo).ThenInclude(prs => prs.PhoneNumbers)
                 .Include(p => p.PhoneNumbers)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id, cacnellationToken);
         }
 
     }

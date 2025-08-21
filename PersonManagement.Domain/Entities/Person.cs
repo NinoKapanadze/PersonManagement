@@ -13,7 +13,7 @@ namespace PersonManagement.Domain
         public List<PhoneNumber> PhoneNumbers { get; private set; }  = new();
         public List<RelatedPerson> RelatedPersons { get; private set; } = new();
 
-        protected Person() { }
+        private Person() { }
         private Person(
             string firstName,
             string lastName,
@@ -30,9 +30,6 @@ namespace PersonManagement.Domain
             BirthDay = birthDay;
             PhoneNumbers = phoneNumbers ?? new List<PhoneNumber>();
             RelatedPersons = relatedPersons ?? new List<RelatedPerson>();
-
-            CreatedDate = DateTime.UtcNow;
-            IsDeleted = false;
         }
 
         public static Person Create(

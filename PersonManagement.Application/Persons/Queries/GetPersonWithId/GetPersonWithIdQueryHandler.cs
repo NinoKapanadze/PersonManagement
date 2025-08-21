@@ -15,7 +15,7 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
         }
         public async Task<PersonDTO> Handle(GetPersonWithIdQuery request, CancellationToken cancellationToken)
         {
-            var person = await _personReadRepository.GetPersonWithDetailsAsync(request.Id);
+            var person = await _personReadRepository.GetPersonWithDetailsAsync(request.Id, cancellationToken);
 
             if (person == null)
             {

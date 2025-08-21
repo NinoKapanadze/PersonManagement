@@ -37,31 +37,31 @@ namespace PersonManagement.Infrastructure.Repositories.Base
             }
         }
 
-        public  TEntity? Add(TEntity model)
+        public  bool Add(TEntity model)
         {
             try
             {
                 _dbSet.Add(model);
 
-                return model;
+                return true;
             }
             catch (Exception ex)
-            {
-                return null;
+            {// TODO: Log the exception if necessary
+                return false;
             }
         }
 
-        public TEntity? Update(TEntity model)
+        public bool Update(TEntity model)
         {
             try
             {
                 _dbSet.Update(model);
 
-                return model;
+                return true;
             }
             catch (Exception ex)
             {
-                return null;
+                return false;
             }
         }
     }

@@ -29,6 +29,9 @@ namespace PersonManagement.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(11);
 
+            builder.HasIndex(p => p.PersonalIdNumber)
+                .IsUnique();
+
             builder.Property(p => p.BirthDay)
                 .IsRequired();
 

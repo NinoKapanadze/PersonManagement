@@ -21,9 +21,7 @@ namespace PersonManagement.API
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
-            services.AddDbContext<DataContext>(options =>
-                                  options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
+            
             return services;
         }
     }

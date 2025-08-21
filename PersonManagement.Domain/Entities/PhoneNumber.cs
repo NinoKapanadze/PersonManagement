@@ -13,12 +13,9 @@ namespace PersonManagement.Domain
         {
             Number = number;
             PhoneType = phoneType;
-
-            CreatedDate = DateTime.UtcNow;
-            IsDeleted = false;
         }
         private PhoneNumber() { }
-        public static PhoneNumber Create(string number, PhoneType phoneType)
+        public static PhoneNumber Create(string number, PhoneType phoneType) 
         {
             return new PhoneNumber(number, phoneType);
         }
