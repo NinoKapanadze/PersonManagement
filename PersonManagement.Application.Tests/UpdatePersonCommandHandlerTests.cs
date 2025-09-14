@@ -5,6 +5,7 @@ using PersonManagement.Application.Persons.Commands.UpdatePerson;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 using PersonManagement.Shared;
+using System.Linq.Expressions;
 
 namespace PersonManagement.Application.Tests
 {
@@ -47,7 +48,7 @@ namespace PersonManagement.Application.Tests
 
             _personReadRepositoryMock
                 .Setup(r => r.GetSingleOrDefaultAsync(
-                    It.Is<Func<Person, bool>>(p => p.Id == 1),
+                    It.IsAny<Expression<Func<Person, bool>>>(),
                     It.IsAny<string[]>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(person);
@@ -89,7 +90,7 @@ namespace PersonManagement.Application.Tests
 
             _personReadRepositoryMock
                 .Setup(r => r.GetSingleOrDefaultAsync(
-                    It.IsAny<Func<Person, bool>>(),
+                    It.IsAny<Expression<Func<Person, bool>>>(),
                     It.IsAny<string[]>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync((Person?)null);
