@@ -10,12 +10,12 @@ namespace PersonManagement.Application.Persons.Commands.DeletePerson
         private readonly IPersonReadRepository _personReadRepository;
         public DeletePersonCommandHandler(IUnitOfWork unitOfWork, IPersonReadRepository personReadRepository)
         {
-             _unitOfWork = unitOfWork;
-            _personReadRepository = personReadRepository;
+             _unitOfWork = unitOfWork?? throw new ArgumentNullException(nameof(unitOfWork));
+            _personReadRepository = personReadRepository?? throw new ArgumentNullException(nameof(personReadRepository));
         }
         public async Task<bool> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await  _personReadRepository.GetSingleAsync(p => p.Id == request.Id);
+            var person = await  _personReadRepository.GetSingleOrDefaultAsync(p => p.Id == request.Id);
 
             if (person == null)
             {

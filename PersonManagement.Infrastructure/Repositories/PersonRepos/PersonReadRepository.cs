@@ -9,7 +9,7 @@ namespace PersonManagement.Infrastructure.Repositories
     {
         public PersonReadRepository(DataContext dbContext) : base(dbContext)
         {
-            
+
         }
 
         public async Task<Person?> GetPersonWithDetailsAsync(int id, CancellationToken cacnellationToken)

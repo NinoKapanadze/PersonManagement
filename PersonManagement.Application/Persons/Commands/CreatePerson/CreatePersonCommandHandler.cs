@@ -16,7 +16,7 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
         }
         public async Task<int> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
         {
-            if(await _personReadRepository.AnyAsync(p => p.PersonalIdNumber == request.PersonalIdNumber))
+            if (await _personReadRepository.AnyAsync(p => p.PersonalIdNumber == request.PersonalIdNumber))
             {
                 throw new ObjectAlreadyExistsException($"Person with PersonalIdNumber {request.PersonalIdNumber} already exists.");
             }

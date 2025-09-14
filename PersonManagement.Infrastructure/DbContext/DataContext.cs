@@ -13,9 +13,7 @@ namespace PersonManagement.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new PersonConfiguration());
-            modelBuilder.ApplyConfiguration(new PhoneNumberConfiguration());
-            modelBuilder.ApplyConfiguration(new RelatedPersonConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PersonConfiguration).Assembly);
 
             base.OnModelCreating(modelBuilder);
         }

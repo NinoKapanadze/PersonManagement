@@ -39,7 +39,22 @@ namespace PersonManagement.Infrastructure.Repositories.Base
                 }
             }
 
-            return await query.FirstOrDefaultAsync(predicate, cancellationToken);
+            return await query.SingleAsync(predicate, cancellationToken);
+        }
+        public async Task<TEntity?> GetSingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
+             string[]? include = null, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> query = _dbSet.AsNoTracking();
+
+            if (include != null)
+            {
+                foreach (var includeProperty in include)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.SingleOrDefaultAsync(predicate, cancellationToken);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
@@ -82,5 +97,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
             return new PagedResult<TEntity>(items, totalCount, pageIndex, pageSize);
         }
+
+       
     }
 }

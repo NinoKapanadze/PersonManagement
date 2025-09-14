@@ -32,6 +32,10 @@ namespace PersonManagement.Domain
         {
             return new RelatedPerson(personId, relatedToId, relationshipType);
         }
+        public static RelatedPerson Create(Person person, Person relatedTo, RelationshipType relationshipType)
+        {
+            return new RelatedPerson(person, relatedTo, relationshipType);
+        }
 
     }
     

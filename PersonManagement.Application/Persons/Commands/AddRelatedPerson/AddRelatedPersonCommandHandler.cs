@@ -2,7 +2,6 @@
 using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
-using System.Reflection;
 
 namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
 {
@@ -12,55 +11,42 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
         IPersonReadRepository _personReadRepository;
         public AddRelatedPersonCommandHandler(IUnitOfWork unitOfWork, IPersonReadRepository personReadRepository)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));    
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _personReadRepository = personReadRepository ?? throw new ArgumentNullException(nameof(personReadRepository));
         }
-        public async  Task<int> Handle(AddRelatedPersonCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddRelatedPersonCommand request, CancellationToken cancellationToken)
         {
-            var relatedPersonExists = await _personReadRepository.AnyAsync(p => p.Id == request.RelatedPersonId);
+            var relatedPerson = await _personReadRepository.GetSingleOrDefaultAsync(p => p.Id == request.RelatedPersonId);
 
-            if (!relatedPersonExists)
+            if (relatedPerson is null)
             {
                 throw new NotFoundException("Related person does not exist.");
             }
 
-            await _unitOfWork.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                var person = Person.Create(
-                  request.FirstName,
-                  request.LastName,
-                  request.Gender,
-                  request.PersonalIdNumber,
-                  request.BirthDay,
-                  request.PhoneNumbers?
-                            .Select(p => PhoneNumber.Create(p.Number, p.PhoneType))
-                            .ToList(),
-                  null);
+            var person = Person.Create(
+              request.FirstName,
+              request.LastName,
+              request.Gender,
+              request.PersonalIdNumber,
+              request.BirthDay,
+              request.PhoneNumbers?
+                        .Select(p => PhoneNumber.Create(p.Number, p.PhoneType))
+                        .ToList(),
+              null);
 
-                _unitOfWork.PersonWriteRepository.Add(person);
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _unitOfWork.PersonWriteRepository.Add(person);
 
-                var relatedTo =  RelatedPerson.Create(
-                                    person.Id,
-                                    request.RelatedPersonId,
-                                    request.RelationshipType
-                );
+            var relatedTo = RelatedPerson.Create(
+                                person,
+                                relatedPerson,
+                                request.RelationshipType
+            );
 
-                _unitOfWork.RelatedPersonWriteRepository.Add(relatedTo);
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _unitOfWork.RelatedPersonWriteRepository.Add(relatedTo);
 
-                await _unitOfWork.CommitTransactionAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return person.Id;
-      
-            }
-            catch 
-            {
-                await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                throw;
-            }
-              
+            return person.Id;
         }
     }
 }
