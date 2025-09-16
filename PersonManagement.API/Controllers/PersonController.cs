@@ -70,7 +70,7 @@ namespace PersonManagement.API.Controllers
         [HttpDelete("DeletePerson/{id}")]
         public async Task<IActionResult> DeletePerson(int id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new DeletePersonCommand { Id = id }, cancellationToken);
+            var result = await _mediator.Send(new DeletePersonCommand (id), cancellationToken);
             return Ok(result);
         }
 
