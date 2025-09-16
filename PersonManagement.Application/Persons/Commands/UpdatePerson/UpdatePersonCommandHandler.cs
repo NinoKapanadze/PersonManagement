@@ -22,7 +22,7 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
         }
         public async Task<PersonDTO> Handle(UpdatePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _personReadRepository.GetSingleAsync(
+            var person = await _personReadRepository.GetSingleOrDefaultAsync(
                         p => p.Id == request.Id,
                         include: new []{ "PhoneNumbers" });
 

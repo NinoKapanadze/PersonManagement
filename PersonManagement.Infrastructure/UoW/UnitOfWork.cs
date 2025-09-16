@@ -1,18 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using PersonManagement.Application.Interfaces;
 using PersonManagement.Application.RepoInterfaces;
-using PersonManagement.Domain;
-using PersonManagement.Infrastructure.Repositories;
-using PersonManagement.Infrastructure.Repositories.Base;
 
 namespace PersonManagement.Infrastructure.UoW
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DataContext _dbContext;
-        private IDbContextTransaction _currentTransaction;
+        private IDbContextTransaction? _currentTransaction;
         public IPersonWriteRepository PersonWriteRepository { get; private set; }
         public IRelatedPersonWriteRepository RelatedPersonWriteRepository { get; private set; }
         public UnitOfWork(DataContext dbContext,

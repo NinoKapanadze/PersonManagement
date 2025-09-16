@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PersonManagement.Application.RepoInterfaces.Base;
 using PersonManagement.Domain;
 
@@ -31,13 +30,13 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        public  bool Add(TEntity model)
+        public bool Add(TEntity model)
         {
             try
             {
@@ -45,7 +44,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {// TODO: Log the exception if necessary
                 return false;
             }
@@ -59,7 +58,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
