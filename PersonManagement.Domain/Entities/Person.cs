@@ -10,6 +10,7 @@ namespace PersonManagement.Domain
         public bool? Gender { get; private set; }
         public string PersonalIdNumber { get; private set; }
         public DateOnly BirthDay { get; private set; }
+        public string ProfessionalSummary { get; private set; } = string.Empty;
         public List<PhoneNumber> PhoneNumbers { get; private set; }  = new();
         public List<RelatedPerson> RelatedPersons { get; private set; } = new();
 
