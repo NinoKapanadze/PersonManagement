@@ -54,7 +54,7 @@ namespace PersonManagement.API.Controllers
         /// <param name="createPersonCommand">The person data to create.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The created person ID.</returns>
-        [HttpPost]
+        [HttpPost("related")]
         public async Task<IActionResult> AddRelatedPerson(AddRelatedPersonCommand createPersonCommand, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(createPersonCommand, cancellationToken);
