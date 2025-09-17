@@ -28,8 +28,8 @@ namespace PersonManagement.API.Controllers
         /// <param name="createPersonCommand">The person data to create.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The created person ID.</returns>
-        [HttpPost("CreatePerson")]
-        public async Task<IActionResult> CreatePerson(CreatePersonCommand createPersonCommand, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> Create(CreatePersonCommand createPersonCommand, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(createPersonCommand, cancellationToken);
             return Ok(result);
@@ -41,8 +41,8 @@ namespace PersonManagement.API.Controllers
         /// <param name="updatePersonCommand">The updated person data.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The updated person.</returns>
-        [HttpPut("UpdatePerson")]
-        public async Task<IActionResult> UpdatePerson(UpdatePersonCommand updatePersonCommand, CancellationToken cancellationToken)
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdatePersonCommand updatePersonCommand, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(updatePersonCommand, cancellationToken);
             return Ok(result);
@@ -54,7 +54,7 @@ namespace PersonManagement.API.Controllers
         /// <param name="createPersonCommand">The person data to create.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The created person ID.</returns>
-        [HttpPost("AddRelatedPerson")]
+        [HttpPost]
         public async Task<IActionResult> AddRelatedPerson(AddRelatedPersonCommand createPersonCommand, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(createPersonCommand, cancellationToken);
@@ -67,10 +67,10 @@ namespace PersonManagement.API.Controllers
         /// <param name="id">The ID of the person to delete.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Returns the result of the delete operation.</returns>
-        [HttpDelete("DeletePerson/{id}")]
-        public async Task<IActionResult> DeletePerson(int id, CancellationToken cancellationToken)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new DeletePersonCommand (id), cancellationToken);
+            var result = await _mediator.Send(new DeletePersonCommand(id), cancellationToken);
             return Ok(result);
         }
 
@@ -83,7 +83,7 @@ namespace PersonManagement.API.Controllers
         [HttpGet("GetPersonWithId/{id}")]
         public async Task<IActionResult> GetPersonWithId(int id, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetPersonWithIdQuery (id), cancellationToken);
+            var result = await _mediator.Send(new GetPersonWithIdQuery(id), cancellationToken);
             return Ok(result);
         }
 
@@ -93,8 +93,8 @@ namespace PersonManagement.API.Controllers
         /// <param name="getPersonList">Query parameters for filtering, sorting, and pagination.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A paginated list of persons.</returns>
-        [HttpGet("GetAllPersons")]
-        public async Task<IActionResult> GetAllPersons([FromQuery] GetAllPersonsListQuery getPersonList, CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllPersonsListQuery getPersonList, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(getPersonList, cancellationToken);
             return Ok(result);

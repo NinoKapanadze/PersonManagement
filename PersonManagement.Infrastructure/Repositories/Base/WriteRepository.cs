@@ -45,7 +45,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
                 return true;
             }
             catch (Exception)
-            {// TODO: Log the exception if necessary
+            {// TODO: Log the exception 
                 return false;
             }
         }
