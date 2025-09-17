@@ -1,43 +1,46 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
+using PersonManagement.Shared.LocalizationResources;
 using System.Text.RegularExpressions;
 
 namespace PersonManagement.Domain.Validators
 {
     public class PersonValidator : AbstractValidator<Person>
     {
-        public PersonValidator()
+        public PersonValidator(IStringLocalizer<SharedResource> localizer)
         {
             RuleFor(x => x.FirstName)
-                .NotEmpty().WithMessage("First name is required.")
-                .MinimumLength(2).WithMessage("First name must be at least 2 characters long.")
-                .MaximumLength(50).WithMessage("First name must be at most 50 characters long.")
+                .NotEmpty().WithMessage(localizer["FirstNameRequired"])
+                .MinimumLength(2).WithMessage(localizer["FirstNameMinLength"])
+                .MaximumLength(50).WithMessage(localizer["FirstNameMaxLength"])
                 .Must(BeOnlyGeorgianOrOnlyLatin)
-                .WithMessage("First name must contain only Georgian letters or only Latin letters, not both.");
+                .WithMessage(localizer["FirstNameGeorgianOrLatin"]);
 
             RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage("Last name is required.")
-                .MinimumLength(2).WithMessage("Last name must be at least 2 characters long.")
-                .MaximumLength(50).WithMessage("Last name must be at most 50 characters long.")
+                .NotEmpty().WithMessage(localizer["LastNameRequired"])
+                .MinimumLength(2).WithMessage(localizer["LastNameMinLength"])
+                .MaximumLength(50).WithMessage(localizer["LastNameMaxLength"])
                 .Must(BeOnlyGeorgianOrOnlyLatin)
-                .WithMessage("Last name must contain only Georgian letters or only Latin letters, not both.");
+                .WithMessage(localizer["LastNameGeorgianOrLatin"]);
 
             RuleFor(x => x.PersonalIdNumber)
-                .NotEmpty().WithMessage("Personal ID number is required.")
-                .Matches(@"^\d{11}$").WithMessage("Personal ID number must be exactly 11 digits.");
+                .NotEmpty().WithMessage(localizer["PersonalIdRequired"])
+                .Matches(@"^\d{11}$").WithMessage(localizer["PersonalIdFormat"]);
 
             RuleFor(x => x.BirthDay)
                 .Must(BeAtLeast18YearsOld)
-                .WithMessage("Person must be at least 18 years old.");
+                .WithMessage(localizer["BirthDayAdult"]);
 
             RuleForEach(p => p.PhoneNumbers)
                 .SetValidator(new PhoneNumberValidator());
         }
 
+
         private bool BeOnlyGeorgianOrOnlyLatin(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) return false;
 
-            var georgianRegex = new Regex(@"^[\u10D0-\u10FF]+$"); 
+            var georgianRegex = new Regex(@"^[\u10D0-\u10FF]+$");
             var latinRegex = new Regex(@"^[a-zA-Z]+$");
 
             return georgianRegex.IsMatch(name) || latinRegex.IsMatch(name);
@@ -47,7 +50,7 @@ namespace PersonManagement.Domain.Validators
         {
             var today = DateOnly.FromDateTime(DateTime.UtcNow);
             var age = today.Year - birthDay.Year;
-            if (birthDay > today.AddYears(-age)) age--; 
+            if (birthDay > today.AddYears(-age)) age--;
             return age >= 18;
         }
     }

@@ -37,6 +37,15 @@ using (var scope = app.Services.CreateScope())
     await DbSeeder.SeedAsync(unitOfWork, dbContext);
 }
 
+var supportedCultures = new[] { "en", "ka"}; 
+
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

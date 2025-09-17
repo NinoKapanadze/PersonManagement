@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using PersonManagement.Infrastructure;
+﻿using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace PersonManagement.API
@@ -21,7 +19,13 @@ namespace PersonManagement.API
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
-            
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddControllersWithViews()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
+
             return services;
         }
     }

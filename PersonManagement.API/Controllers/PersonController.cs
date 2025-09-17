@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using PersonManagement.Application.Persons.Commands.AddRelatedPerson;
 using PersonManagement.Application.Persons.Commands.CreatePerson;
 using PersonManagement.Application.Persons.Commands.DeletePerson;
 using PersonManagement.Application.Persons.Commands.UpdatePerson;
 using PersonManagement.Application.Persons.Queries.GetPersonsList;
 using PersonManagement.Application.Persons.Queries.GetPersonWithId;
+using PersonManagement.Shared.LocalizationResources;
 
 namespace PersonManagement.API.Controllers
 {
@@ -17,9 +19,12 @@ namespace PersonManagement.API.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public PersonController(IMediator mediator)
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
+        public PersonController(IMediator mediator, IStringLocalizer<SharedResource> stringLocalizer)
         {
             _mediator = mediator;
+            _localizer = stringLocalizer;
         }
 
         /// <summary>

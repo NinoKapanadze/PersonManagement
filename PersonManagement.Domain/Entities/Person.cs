@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using PersonManagement.Domain.Validators;
+using PersonManagement.Shared.LocalizationResources;
 
 namespace PersonManagement.Domain
 {
@@ -38,6 +40,7 @@ namespace PersonManagement.Domain
                 bool? gender,
                 string personalIdNumber,
                 DateOnly birthDay,
+                IStringLocalizer<SharedResource> localizer,
                 List<PhoneNumber>? phoneNumbers = null,
                 List<RelatedPerson>? relatedPersons = null)
         {
@@ -51,7 +54,7 @@ namespace PersonManagement.Domain
                 relatedPersons ?? new List<RelatedPerson>()
             );
 
-            var validator = new PersonValidator();
+            var validator = new PersonValidator(localizer);
             var validationResult = validator.Validate(person);
 
             if (!validationResult.IsValid)
@@ -69,6 +72,7 @@ namespace PersonManagement.Domain
                 bool? gender,
                 string personalIdNumber,
                 DateOnly birthDay,
+                IStringLocalizer<SharedResource> localizer,
                 List<PhoneNumber>? phoneNumbers = null)
         {
             FirstName = firstName;
@@ -77,7 +81,7 @@ namespace PersonManagement.Domain
             PersonalIdNumber = personalIdNumber;
             BirthDay = birthDay;
 
-            var validator = new PersonValidator();
+            var validator = new PersonValidator(localizer);
             var validationResult = validator.Validate(this);
 
             if (!validationResult.IsValid)
@@ -86,7 +90,7 @@ namespace PersonManagement.Domain
             }
         }
 
-        public void UpdatePhoneNumbers(IEnumerable<PhoneNumber> newNumbers)
+        public void UpdatePhoneNumbers(IEnumerable<PhoneNumber> newNumbers, IStringLocalizer<SharedResource> localizer)
         {
 
             foreach (var phone in PhoneNumbers)
@@ -107,7 +111,7 @@ namespace PersonManagement.Domain
                 }
             }
 
-            var validator = new PersonValidator();
+            var validator = new PersonValidator(localizer);
             var validationResult = validator.Validate(this);
             if (!validationResult.IsValid)
             {
