@@ -3,7 +3,6 @@ using PersonManagement.Application.Exceptions;
 using PersonManagement.Application.Persons.Queries.GetPersonWithId;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
-using PersonManagement.Shared;
 
 namespace PersonManagement.Application.Tests
 {
@@ -24,41 +23,9 @@ namespace PersonManagement.Application.Tests
             // Arrange
             var query = new GetPersonWithIdQuery(1);
 
-            var person = Person.Create
-            (
-                "John",
-                "Doe",
-                true,
-                "12345678901",
-                new DateOnly(1990, 1, 1),
-                new List<PhoneNumber>
-                {
-                     PhoneNumber.Create("5551234", PhoneType.Mobile)
-                },
-                new List<RelatedPerson>()
-            );
-
-            typeof(Person)
-               .GetProperty("Id")!
-               .SetValue(person, 1);
-
-
-            var relatedPerson = Person.Create
-            (
-                "Jane",
-                "Doe",
-                false,
-                "10987654321",
-                new DateOnly(1992, 2, 2),
-                new List<PhoneNumber>(),
-                new List<RelatedPerson>()
-            );
-
-            typeof(Person).GetProperty("Id")!.SetValue(relatedPerson, 2);
-
-            var relation = RelatedPerson.Create(person, relatedPerson, RelationshipType.Relative);
-
-            person.RelatedPersons.Add(relation);
+            var people = PersonTestHelper.CreatePersonWithRelation();
+            var person = people.person;
+            var relatedPerson = people.relatedPerson;
 
             _personReadRepositoryMock
                 .Setup(r => r.GetPersonWithDetailsAsync(query.Id, It.IsAny<CancellationToken>()))

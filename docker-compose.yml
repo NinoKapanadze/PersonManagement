@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  personmanagement.api:
+    image: ${DOCKER_REGISTRY-}personmanagementapi
+    build:
+      context: .
+      dockerfile: PersonManagement.API/Dockerfile
+    ports:
+      - "5000:8080"  # map container port 8080 to host port 5000
+    environment:
+      - ConnectionStrings__Default=Server=host.docker.internal;Database=PersonManagementDb;User=sa;Password=YourStrong!Passw0rd;
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql_db
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+volumes:
+  sql_data:
