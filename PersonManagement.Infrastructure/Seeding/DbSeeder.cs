@@ -1,4 +1,5 @@
-﻿using PersonManagement.Application.RepoInterfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
 using PersonManagement.Shared;
 
@@ -8,6 +9,8 @@ namespace PersonManagement.Infrastructure.Seeding
     {
         public static async Task SeedAsync(IUnitOfWork unitOfWork, DataContext dbcontext, CancellationToken cancellationToken = default)
         {
+            await dbcontext.Database.MigrateAsync();
+
             if (dbcontext.Persons.Any())
                 return;
 
@@ -32,7 +35,7 @@ namespace PersonManagement.Infrastructure.Seeding
                 "Smith",
                  false,
                 "10987654321",
-                new DateOnly(1994, 5, 15),
+                new DateOnly(2000, 5, 15),
                 new List<PhoneNumber>
                 {
                     PhoneNumber.Create("1231237", PhoneType.Office)

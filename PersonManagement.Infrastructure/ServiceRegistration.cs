@@ -31,5 +31,13 @@ namespace PersonManagement.Infrastructure
 
             return services;
         }
+        public static async Task SeedDatabaseAsync(this IServiceProvider services)
+        {
+            using var scope = services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+            await DbSeeder.SeedAsync(unitOfWork, dbContext);
+        }
     }
 }
