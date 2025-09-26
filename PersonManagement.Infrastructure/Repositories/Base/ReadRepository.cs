@@ -97,7 +97,5 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
             return new PagedResult<TEntity>(items, totalCount, pageIndex, pageSize);
         }
-
-
     }
 }
