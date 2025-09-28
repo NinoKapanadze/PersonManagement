@@ -6,7 +6,7 @@ namespace PersonManagement.Infrastructure.Repositories.RelatedPersonRepos
 {
     public class RelatedPersonWriteRepository : WriteRepository<RelatedPerson>, IRelatedPersonWriteRepository
     {
-        public RelatedPersonWriteRepository(DataContext dbContext) : base(dbContext)
+        public RelatedPersonWriteRepository(DataContext dbContext, ILogger<WriteRepository<RelatedPerson>> logger) : base(dbContext, logger)
         {
 
         }

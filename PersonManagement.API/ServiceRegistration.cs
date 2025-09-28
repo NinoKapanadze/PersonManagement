@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using PersonManagement.Infrastructure;
+﻿using Microsoft.OpenApi.Models;
+using PersonManagement.Application.Configs;
 using System.Reflection;
 
 namespace PersonManagement.API
@@ -21,7 +20,9 @@ namespace PersonManagement.API
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
-            
+
+            services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+
             return services;
         }
     }

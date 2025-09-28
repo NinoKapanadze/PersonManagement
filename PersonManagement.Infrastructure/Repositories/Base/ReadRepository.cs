@@ -27,7 +27,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
         }
 
         public async Task<TEntity?> GetSingleAsync(Expression<Func<TEntity, bool>> predicate,
-             string[]? include = null , CancellationToken cancellationToken = default)
+             string[]? include = null, CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> query = _dbSet.AsNoTracking();
 
