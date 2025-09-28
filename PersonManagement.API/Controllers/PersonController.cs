@@ -80,7 +80,7 @@ namespace PersonManagement.API.Controllers
         /// <param name="id">The ID of the person to retrieve.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The person with the specified ID.</returns>
-        [HttpGet("GetPersonWithId/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetPersonWithId(int id, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GetPersonWithIdQuery(id), cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PersonManagement.Application.RepoInterfaces.Base;
 using PersonManagement.Domain;
 
@@ -32,7 +33,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
                 return false;
@@ -62,7 +63,7 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
                 return false;

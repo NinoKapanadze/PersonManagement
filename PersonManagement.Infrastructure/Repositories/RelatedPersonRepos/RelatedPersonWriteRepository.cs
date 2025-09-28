@@ -1,4 +1,5 @@
-﻿using PersonManagement.Application.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using PersonManagement.Application.Interfaces;
 using PersonManagement.Domain;
 using PersonManagement.Infrastructure.Repositories.Base;
 
