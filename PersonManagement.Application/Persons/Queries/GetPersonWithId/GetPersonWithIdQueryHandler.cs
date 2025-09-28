@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using PersonManagement.Application.DTOs;
 using PersonManagement.Application.Exceptions;
+using PersonManagement.Application.Interfaces;
 using PersonManagement.Application.RepoInterfaces;
 
 namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
@@ -9,21 +9,29 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
     public class GetPersonWithIdQueryHandler : IRequestHandler<GetPersonWithIdQuery, PersonDTO>
     {
         private readonly IPersonReadRepository _personReadRepository;
-        public GetPersonWithIdQueryHandler(IPersonReadRepository personReadRepository)
+        private readonly ICacheService _cacheService;
+        public GetPersonWithIdQueryHandler(IPersonReadRepository personReadRepository, ICacheService cacheService)
         {
             _personReadRepository = personReadRepository ?? throw new ArgumentNullException(nameof(personReadRepository));
+            _cacheService = cacheService ?? throw new ArgumentNullException();
         }
         public async Task<PersonDTO> Handle(GetPersonWithIdQuery request, CancellationToken cancellationToken)
         {
-            var person = await _personReadRepository.GetPersonWithDetailsAsync(request.Id, cancellationToken);
+            string cacheKey = $"person:{request.Id}";
+            var cachedPerson = await _cacheService.GetAsync<PersonDTO>(cacheKey, cancellationToken);
+            if (cachedPerson != null)
+            {
+                return cachedPerson; 
+            }
 
+            var person = await _personReadRepository.GetPersonWithDetailsAsync(request.Id, cancellationToken);
             if (person == null)
             {
                 throw new NotFoundException($"Person with Id {request.Id} not found.");
             }
 
             var result = new PersonDTO(
-                    Id : person.Id,
+                    Id: person.Id,
                     FirstName: person.FirstName,
                     LastName: person.LastName,
                     Gender: person.Gender,
@@ -50,11 +58,13 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonWithId
                                         PhoneType: pn.PhoneType
                                     ))
                                     .ToList() ?? new List<PhoneNumberDto>(),
-                            RelatedPersons: new List<RelatedPersonDTO>() 
+                            RelatedPersons: new List<RelatedPersonDTO>()
                         ),
                         RelationshipType: rp.RelationshipType
                     )).ToList() ?? new List<RelatedPersonDTO>()
                 );
+
+            await _cacheService.SetAsync(cacheKey, result, TimeSpan.FromMinutes(10), cancellationToken);
 
             return result;
         }

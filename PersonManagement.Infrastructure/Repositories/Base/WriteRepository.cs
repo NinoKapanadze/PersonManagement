@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PersonManagement.Application.RepoInterfaces.Base;
 using PersonManagement.Domain;
 
@@ -8,12 +9,14 @@ namespace PersonManagement.Infrastructure.Repositories.Base
     {
         protected readonly DataContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
+        protected readonly ILogger<WriteRepository<TEntity>> _logger;
 
         public WriteRepository(
-            DataContext dbContext)
+            DataContext dbContext, ILogger<WriteRepository<TEntity>> logger)
         {
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<TEntity>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public bool Delete(TEntity entity)
@@ -30,8 +33,9 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger?.LogError(ex.Message, ex);
                 return false;
             }
         }
@@ -44,8 +48,9 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception)
-            {// TODO: Log the exception 
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex.Message, ex);
                 return false;
             }
         }
@@ -58,8 +63,9 @@ namespace PersonManagement.Infrastructure.Repositories.Base
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger?.LogError(ex.Message, ex);
                 return false;
             }
         }
