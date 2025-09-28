@@ -6,23 +6,37 @@ services:
     build:
       context: .
       dockerfile: PersonManagement.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ASPNETCORE_HTTPS_PORTS=5001
     ports:
-      - "5000:8080"  # map container port 8080 to host port 5000
-    environment:
-      - ConnectionStrings__Default=Server=host.docker.internal;Database=PersonManagementDb;User=sa;Password=YourStrong!Passw0rd;
+      - "5000:5000"
+      - "5001:5001"
     depends_on:
-      - db
+      - personManagement.db
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: sql_db
+  personManagement.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: personManagement.db
     environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
-      ACCEPT_EULA: "Y"
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_Passw0rd123!   
+      - MSSQL_PID=Developer
     ports:
       - "1433:1433"
     volumes:
-      - sql_data:/var/opt/mssql
+      - personmanagementdb-data:/var/opt/mssql
+  personmanagement.cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
-  sql_data:
+  personmanagementdb-data:

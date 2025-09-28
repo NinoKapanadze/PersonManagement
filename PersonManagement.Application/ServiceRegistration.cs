@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PersonManagement.Application.Configs;
 using System.Reflection;
 
 namespace PersonManagement.Application
@@ -11,7 +11,8 @@ namespace PersonManagement.Application
         {
             services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-            
+            //services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+
             return services;
         }
     }
