@@ -11,5 +11,6 @@ namespace PersonManagement.Application.RepoInterfaces
         Task RollbackTransactionAsync(CancellationToken cancellationToken);
         IPersonWriteRepository PersonWriteRepository { get; }
         IRelatedPersonWriteRepository RelatedPersonWriteRepository { get;}   
+        IExperienceWriteRepository ExperienceWriteRepository { get; }
     }
 }

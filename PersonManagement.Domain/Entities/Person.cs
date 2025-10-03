@@ -13,7 +13,7 @@ namespace PersonManagement.Domain
         public DateOnly BirthDay { get; private set; }
         public string ProfessionalSummary { get; private set; } = string.Empty;
 
-        public List<PhoneNumber> PhoneNumbers { get; private set; }  = new();
+        public List<PhoneNumber> PhoneNumbers { get; private set; } = new();
         public List<RelatedPerson> RelatedPersons { get; private set; } = new();
         public List<Experience> Experiences { get; private set; } = new();
 
@@ -56,7 +56,7 @@ namespace PersonManagement.Domain
                 personalIdNumber,
                 birthDay,
                 phoneNumbers ?? new List<PhoneNumber>(),
-                relatedPersons ?? new List<RelatedPerson>()
+                relatedPersons ?? new List<RelatedPerson>(),
                 experiences ?? new List<Experience>()
 
             );
@@ -108,7 +108,7 @@ namespace PersonManagement.Domain
             }
 
             foreach (var item in newNumbers)
-            { 
+            {
                 var existingPhone = PhoneNumbers.FirstOrDefault(p => p.Number == item.Number && p.PhoneType == item.PhoneType);
 
                 if (existingPhone == null)
@@ -123,6 +123,18 @@ namespace PersonManagement.Domain
             {
                 throw new ValidationException(validationResult.Errors);
             }
+        }
+        public Experience AddExperience(
+            string position,
+            List<string> skills,
+            DateTime startDate,
+            DateTime? endDate,
+            string companyName)
+        {
+            var exp = new Experience(position, skills, startDate, endDate, companyName, this);
+
+            Experiences.Add(exp);
+            return exp;
         }
     }
 }

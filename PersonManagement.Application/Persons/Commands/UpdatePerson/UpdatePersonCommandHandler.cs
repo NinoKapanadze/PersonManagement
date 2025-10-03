@@ -19,10 +19,11 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
         {
             var person = await _personReadRepository.GetSingleOrDefaultAsync(
                         p => p.Id == request.Id,
-                        include: new[] { "PhoneNumbers" });
+                        include: new[] { "PhoneNumbers" },
+                        cancellationToken);
 
             if (person == null)
-                throw new NotFoundException($"Person with Id {request.Id} not found.");
+                throw new NotFoundException(nameof(person), "Person not found.");
 
             person.Update(
                  request.FirstName,
@@ -55,7 +56,8 @@ namespace PersonManagement.Application.Persons.Commands.UpdatePerson
                     Number: pn.Number,
                     PhoneType: pn.PhoneType
                 )).ToList(),
-                new List<RelatedPersonDTO>()
+                new List<RelatedPersonDTO>(),
+                new List<ExperienceDTO>()
             );
         }
     }

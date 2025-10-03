@@ -2,9 +2,12 @@
 {
     public class NotFoundException : AppException
     {
-        public NotFoundException(string message)
-            : base("NotFound", "Resource Not Found", message)
+        public string ResourceName { get; }
+
+        public NotFoundException(string message, string resourceName)
+            : base("NotFound", $"{resourceName} Not Found", message)
         {
+            ResourceName = resourceName;
         }
     }
 

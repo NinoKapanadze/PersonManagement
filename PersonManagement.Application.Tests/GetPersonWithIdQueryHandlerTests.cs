@@ -1,5 +1,6 @@
 ﻿using Moq;
 using PersonManagement.Application.Exceptions;
+using PersonManagement.Application.Interfaces;
 using PersonManagement.Application.Persons.Queries.GetPersonWithId;
 using PersonManagement.Application.RepoInterfaces;
 using PersonManagement.Domain;
@@ -11,11 +12,12 @@ namespace PersonManagement.Application.Tests
     {
         private readonly Mock<IPersonReadRepository> _personReadRepositoryMock;
         private readonly GetPersonWithIdQueryHandler _handler;
+        private readonly ICacheService _cacheService;
 
         public GetPersonWithIdQueryHandlerTests()
         {
             _personReadRepositoryMock = new Mock<IPersonReadRepository>();
-            _handler = new GetPersonWithIdQueryHandler(_personReadRepositoryMock.Object);
+            _handler = new GetPersonWithIdQueryHandler(_personReadRepositoryMock.Object, _cacheService);
         }
 
         [Fact]

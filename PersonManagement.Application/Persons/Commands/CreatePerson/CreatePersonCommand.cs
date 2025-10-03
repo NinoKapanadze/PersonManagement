@@ -11,8 +11,7 @@ namespace PersonManagement.Application.Persons.Commands.CreatePerson
     bool? Gender,
     string PersonalIdNumber,
     DateOnly BirthDay,
-    List<PhoneNumberDto> PhoneNumbers,
-    List<Experience> Experiences
+    List<PhoneNumberDto> PhoneNumbers
 ) :
     IRequest<int>;
 
