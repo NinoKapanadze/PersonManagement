@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonManagement.Infrastructure;
 
@@ -11,9 +12,11 @@ using PersonManagement.Infrastructure;
 namespace PersonManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250917151851_AddedProfessionalSummary")]
+    partial class AddedProfessionalSummary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,55 +24,6 @@ namespace PersonManagement.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PersonManagement.Domain.Entities.Experience", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.PrimitiveCollection<string>("Skills")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Experiences");
-                });
 
             modelBuilder.Entity("PersonManagement.Domain.Person", b =>
                 {
@@ -195,17 +149,6 @@ namespace PersonManagement.Infrastructure.Migrations
                     b.ToTable("RelatedPersons");
                 });
 
-            modelBuilder.Entity("PersonManagement.Domain.Entities.Experience", b =>
-                {
-                    b.HasOne("PersonManagement.Domain.Person", "Person")
-                        .WithMany("Experiences")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
-                });
-
             modelBuilder.Entity("PersonManagement.Domain.PhoneNumber", b =>
                 {
                     b.HasOne("PersonManagement.Domain.Person", "Person")
@@ -238,8 +181,6 @@ namespace PersonManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("PersonManagement.Domain.Person", b =>
                 {
-                    b.Navigation("Experiences");
-
                     b.Navigation("PhoneNumbers");
 
                     b.Navigation("RelatedPersons");

@@ -20,7 +20,7 @@ namespace PersonManagement.Application.Persons.Commands.AddRelatedPerson
 
             if (relatedPerson is null)
             {
-                throw new NotFoundException("Related person does not exist.");
+                throw new NotFoundException(nameof(relatedPerson), "Related Person not found.");
             }
 
             var person = Person.Create(

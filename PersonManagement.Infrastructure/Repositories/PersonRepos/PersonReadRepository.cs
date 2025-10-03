@@ -17,6 +17,7 @@ namespace PersonManagement.Infrastructure.Repositories
             return await _dbContext.Persons
                 .Include(p => p.RelatedPersons).ThenInclude(rp => rp.RelatedTo).ThenInclude(prs => prs.PhoneNumbers)
                 .Include(p => p.PhoneNumbers)
+                .Include(p => p.Experiences)
                 .FirstOrDefaultAsync(p => p.Id == id, cacnellationToken);
         }
 

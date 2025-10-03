@@ -41,7 +41,8 @@ namespace PersonManagement.Application.Persons.Queries.GetPersonsList
                     Number: ph.Number,
                     PhoneType: ph.PhoneType
                 )).ToList(),
-                RelatedPersons: new List<RelatedPersonDTO>()
+                RelatedPersons: new List<RelatedPersonDTO>(),
+                Experiences: new List<ExperienceDTO>()
             )).ToList();
 
             return new PagedResult<PersonDTO>(

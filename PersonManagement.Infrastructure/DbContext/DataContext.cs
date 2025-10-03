@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonManagement.Domain;
+using PersonManagement.Domain.Entities;
 using PersonManagement.Infrastructure.Configurations;
 
 namespace PersonManagement.Infrastructure
@@ -10,6 +11,7 @@ namespace PersonManagement.Infrastructure
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<RelatedPerson> RelatedPersons { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

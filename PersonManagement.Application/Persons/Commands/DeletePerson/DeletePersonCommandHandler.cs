@@ -19,7 +19,7 @@ namespace PersonManagement.Application.Persons.Commands.DeletePerson
 
             if (person == null)
             {
-                throw new NotFoundException($"Person with ID {request.Id} not found.");
+                throw new NotFoundException(nameof(person), "Person not found.");
             }
             var result = _unitOfWork.PersonWriteRepository.Delete(person);
 

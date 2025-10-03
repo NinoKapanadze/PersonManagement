@@ -17,4 +17,8 @@
     <ProjectReference Include="..\PersonManagement.Shared\PersonManagement.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Experiences\Commands\AddExperienceToPerson\" />
+  </ItemGroup>
+
 </Project>

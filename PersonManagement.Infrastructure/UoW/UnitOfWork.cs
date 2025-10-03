@@ -10,6 +10,9 @@ namespace PersonManagement.Infrastructure.UoW
         private IDbContextTransaction? _currentTransaction;
         public IPersonWriteRepository PersonWriteRepository { get; private set; }
         public IRelatedPersonWriteRepository RelatedPersonWriteRepository { get; private set; }
+
+        public IExperienceWriteRepository ExperienceWriteRepository { get; private set; }
+
         public UnitOfWork(DataContext dbContext,
                       IPersonWriteRepository personWriteRepository,
                       IRelatedPersonWriteRepository relatedPersonWriteRepository)

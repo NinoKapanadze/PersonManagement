@@ -8,6 +8,7 @@
       string PersonalIdNumber,
       DateOnly BirthDay,
       List<PhoneNumberDto> PhoneNumbers,
-      List<RelatedPersonDTO> RelatedPersons);
+      List<RelatedPersonDTO> RelatedPersons,
+      List<ExperienceDTO> Experiences);
     
 }

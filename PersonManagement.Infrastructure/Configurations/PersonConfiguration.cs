@@ -35,6 +35,10 @@ namespace PersonManagement.Infrastructure.Configurations
             builder.Property(p => p.BirthDay)
                 .IsRequired();
 
+            builder.Property(p=>p.ProfessionalSummary)
+                                .IsRequired(false)
+                .HasMaxLength(1000);
+
             builder.HasQueryFilter(rp => !rp.IsDeleted);
         }
     }

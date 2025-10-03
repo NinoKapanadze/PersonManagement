@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Validators;
 using MediatR;
 using PersonManagement.Application.DTOs;
+using PersonManagement.Domain.Entities;
 
 namespace PersonManagement.Application.Persons.Commands.CreatePerson
 {

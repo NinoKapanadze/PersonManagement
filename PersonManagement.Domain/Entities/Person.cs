@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PersonManagement.Domain.Entities;
 using PersonManagement.Domain.Validators;
 
 namespace PersonManagement.Domain
@@ -10,8 +11,11 @@ namespace PersonManagement.Domain
         public bool? Gender { get; private set; }
         public string PersonalIdNumber { get; private set; }
         public DateOnly BirthDay { get; private set; }
-        public List<PhoneNumber> PhoneNumbers { get; private set; }  = new();
+        public string ProfessionalSummary { get; private set; } = string.Empty;
+
+        public List<PhoneNumber> PhoneNumbers { get; private set; } = new();
         public List<RelatedPerson> RelatedPersons { get; private set; } = new();
+        public List<Experience> Experiences { get; private set; } = new();
 
         private Person() { }
         private Person(
@@ -20,8 +24,9 @@ namespace PersonManagement.Domain
             bool? gender,
             string personalIdNumber,
             DateOnly birthDay,
-            List<PhoneNumber> phoneNumbers,
-            List<RelatedPerson> relatedPersons)
+            List<PhoneNumber>? phoneNumbers,
+            List<RelatedPerson>? relatedPersons,
+            List<Experience>? experiences)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -30,6 +35,8 @@ namespace PersonManagement.Domain
             BirthDay = birthDay;
             PhoneNumbers = phoneNumbers ?? new List<PhoneNumber>();
             RelatedPersons = relatedPersons ?? new List<RelatedPerson>();
+            Experiences = experiences ?? new List<Experience>();
+
         }
 
         public static Person Create(
@@ -39,7 +46,8 @@ namespace PersonManagement.Domain
                 string personalIdNumber,
                 DateOnly birthDay,
                 List<PhoneNumber>? phoneNumbers = null,
-                List<RelatedPerson>? relatedPersons = null)
+                List<RelatedPerson>? relatedPersons = null,
+                List<Experience>? experiences = null)
         {
             var person = new Person(
                 firstName,
@@ -48,7 +56,9 @@ namespace PersonManagement.Domain
                 personalIdNumber,
                 birthDay,
                 phoneNumbers ?? new List<PhoneNumber>(),
-                relatedPersons ?? new List<RelatedPerson>()
+                relatedPersons ?? new List<RelatedPerson>(),
+                experiences ?? new List<Experience>()
+
             );
 
             var validator = new PersonValidator();
@@ -98,7 +108,7 @@ namespace PersonManagement.Domain
             }
 
             foreach (var item in newNumbers)
-            { 
+            {
                 var existingPhone = PhoneNumbers.FirstOrDefault(p => p.Number == item.Number && p.PhoneType == item.PhoneType);
 
                 if (existingPhone == null)
@@ -113,6 +123,18 @@ namespace PersonManagement.Domain
             {
                 throw new ValidationException(validationResult.Errors);
             }
+        }
+        public Experience AddExperience(
+            string position,
+            List<string> skills,
+            DateTime startDate,
+            DateTime? endDate,
+            string companyName)
+        {
+            var exp = new Experience(position, skills, startDate, endDate, companyName, this);
+
+            Experiences.Add(exp);
+            return exp;
         }
     }
 }

@@ -10,6 +10,7 @@ using PersonManagement.Infrastructure.Repositories.RelatedPersonRepos;
 using PersonManagement.Infrastructure.Seeding;
 using PersonManagement.Infrastructure.Services;
 using PersonManagement.Infrastructure.UoW;
+using System;
 
 namespace PersonManagement.Infrastructure
 {
@@ -29,14 +30,33 @@ namespace PersonManagement.Infrastructure
             services.AddScoped<ICacheService, CacheService>();
 
             services.AddDbContext<DataContext>(options =>
-                                  options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            
-            services.AddStackExchangeRedisCache(options =>
+                                  options.UseSqlServer(
+                                      configuration.GetConnectionString("DefaultConnection"),
+                                       sqlOptions =>
+                                       {
+                                           sqlOptions.EnableRetryOnFailure(
+                                               maxRetryCount: 2,              
+                                               maxRetryDelay: TimeSpan.FromSeconds(5), 
+                                               errorNumbersToAdd: null     
+                                           );
+                                       }
+                                  )
+            );
+
+            var cacheConn = configuration.GetConnectionString("Cache");
+            if (!string.IsNullOrWhiteSpace(cacheConn))
             {
-                options.Configuration = configuration.GetConnectionString("Cache");
-                options.InstanceName = "PersonManagement_";
-            });
-            
+                services.AddStackExchangeRedisCache(options =>
+                {
+                  options.Configuration = cacheConn;
+                    options.InstanceName = "PersonManagement_";
+                });
+            }  
+            else
+            {
+                services.AddDistributedMemoryCache();
+            }
+
             return services;
         }
         public static async Task SeedDatabaseAsync(this IServiceProvider services)
